@@ -72,3 +72,35 @@ void BitcoinExchange::loadDatabase(const std::string& filename) {
 		_database[data.first] = data.second;
 	}
 }
+
+/**
+ * @brief Parses one line from the CSV database.
+ * 
+ * The database line is expected to have the following format:
+ * 	- data,exchange_rate.
+ * Example: 2011-01-03,0.3.
+ * The function splits the line by comma, trims both parts and converts
+ * the exchange rate from string to double.
+ * 
+ * @param line One line from the database file.
+ * @return std::pair containing date as first and exchange rate as second.
+ * @throws std::runtime_error If the line has an invalid format.
+ */
+std::pair<std::string, double>
+BitcoinExchange::parseDatabaseLine(const std::string& line) const {
+	std::stringstream ss(line);
+	std::string date;
+	std::string rateStr;
+
+	if (!std::getline(ss, date, ',') || !std::getline(ss, rateStr))
+		throw std::runtime_error("Error: bad database format.");
+	
+	date = trim(date);
+	rateStr = trim(rateStr);
+
+	if (date.empty() || rateStr.empty())
+		throw std::runtime_error("Error: bad database format.");
+	
+	double rate = std::strtod(rateStr.c_str(), NULL);
+	return std::make_pair(date, rate);
+}
