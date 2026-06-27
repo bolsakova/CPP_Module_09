@@ -91,6 +91,7 @@ BitcoinExchange::parseDatabaseLine(const std::string& line) const {
 	std::stringstream ss(line);
 	std::string date;
 	std::string rateStr;
+	char* end;
 
 	if (!std::getline(ss, date, ',') || !std::getline(ss, rateStr))
 		throw std::runtime_error("Error: bad database format.");
@@ -101,6 +102,31 @@ BitcoinExchange::parseDatabaseLine(const std::string& line) const {
 	if (date.empty() || rateStr.empty())
 		throw std::runtime_error("Error: bad database format.");
 	
-	double rate = std::strtod(rateStr.c_str(), NULL);
+	double rate = std::strtod(rateStr.c_str(), &end);
+
+	if (*end != '\0')
+		throw std::runtime_error("Error: bad database format.");
+	
 	return std::make_pair(date, rate);
+}
+
+/**
+ * @brief Removes leading and trailing whitespace from a string.
+ * 
+ * This function removes spaces, tabs and other whitespace characters
+ * from both ends of the input string.
+ * 
+ * @param str The string to trim.
+ * @return A copy of the string without leading and trailing whitespace.
+ */
+std::string BitcoinExchange::trim(const std::string& str) const {
+	const std::string whitespace = " \t\n\r\f\v";
+
+	std::size_t first = str.find_first_not_of(whitespace);
+
+	if (first == std::string::npos)
+		return "";
+	
+	std::size_t last = str.find_last_not_of(whitespace);
+	return str.substr(first, last - first + 1);
 }
