@@ -325,7 +325,7 @@ void BitcoinExchange::processInputFile(const std::string& filename) const {
 				continue;
 			}
 			if (status == VALUE_TOO_LARGE) {
-				std::cerr << "Error: too large number." << std::endl;
+				std::cerr << "Error: too large a number." << std::endl;
 				continue;
 			}
 
