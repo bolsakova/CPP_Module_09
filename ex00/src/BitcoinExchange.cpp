@@ -162,3 +162,57 @@ BitcoinExchange::parseInputLine(const std::string& line) const {
 	
 	return std::make_pair(date, valueStr);
 }
+
+/**
+ * @brief Checks whether a date string is valid.
+ * 
+ * The expected format is: YYYY-MM-DD
+ * The function checks the format, verifies that all date parts are numeric,
+ * then validates month and day values, including leap years.
+ * 
+ * @param date Date string to validate.
+ * @return true If the date is valid.
+ * @return false If the date is invalid.
+ */
+bool BitcoinExchange::isValidDate(const std::string& date) const {
+	if (date.length() != 10)
+		return false;
+	
+	if (date[4] != '-' || date [7] != '-')
+		return false;
+	
+	for (std::size_t i = 0; i < date.length(); ++i) {
+		if (i == 4 || i == 7)
+			continue;
+		if (!std::isdigit(static_cast<unsigned char>(date[i])))
+			return false;
+	}
+
+	int year = std::atoi(date.substr(0, 4).c_str());
+	int month = std::atoi(date.substr(5, 2).c_str());
+	int day = std::atoi(date.substr(8, 2).c_str());
+
+	if (year < 0)
+		return false;
+
+	if (month < 1 || month > 12)
+		return false;
+	
+	int daysInMonth[] = {
+		31, 28, 31, 30, 31, 30,
+		31, 31, 30, 31, 30, 31
+	};
+
+	bool leapYear = false;
+
+	if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+		leapYear = true;
+
+	if (leapYear && month == 2)
+		daysInMonth[1] = 29;
+	
+	if (day < 1 || day > daysInMonth[month - 1])
+		return false;
+
+	return true;
+}

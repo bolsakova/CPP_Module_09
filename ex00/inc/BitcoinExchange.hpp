@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <cctype>
 
 class BitcoinExchange {
 	private:
