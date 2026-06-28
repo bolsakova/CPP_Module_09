@@ -59,3 +59,19 @@ bool RPN::isOperator(const std::string& token) const {
 			|| token[0] == '*'
 			|| token[0] == '/'));
 }
+
+/**
+ * @brief Checks whether a token is a valid number.
+ * 
+ * According to the subject, input numbers are always less than 10.
+ * Therefore a valid number token must contain exactly one digit.
+ * 
+ * @param token Token to check.
+ * @return true if the token is a one-digit number.
+ * @return false otherwise.
+ */
+bool RPN::isNumber(const std::string& token) const {
+	return (token.length() == 1
+		&& token[0] >= '0'
+		&& token[0] <= '9');
+}
