@@ -104,7 +104,10 @@ BitcoinExchange::parseDatabaseLine(const std::string& line) const {
 	
 	double rate = std::strtod(rateStr.c_str(), &end);
 
-	if (*end != '\0')
+	if (end == rateStr.c_str() || *end != '\0')
+		throw std::runtime_error("Error: bad database format.");
+
+	if (!isValidDate(date))
 		throw std::runtime_error("Error: bad database format.");
 	
 	return std::make_pair(date, rate);
