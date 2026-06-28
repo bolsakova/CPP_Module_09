@@ -43,3 +43,19 @@ RPN& RPN::operator=(const RPN& other) {
 	return *this;
 }
 
+/**
+ * @brief Checks whether a token is a supported operator.
+ * 
+ * Supported operators are: +, -, *, /
+ * 
+ * @param token Token to check.
+ * @return true if the token is an operator.
+ * @return false otherwise.
+ */
+bool RPN::isOperator(const std::string& token) const {
+	return (token.length() == 1
+		&& (token[0] == '+'
+			|| token[0] == '-'
+			|| token[0] == '*'
+			|| token[0] == '/'));
+}
