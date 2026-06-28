@@ -231,20 +231,25 @@ bool BitcoinExchange::isValidDate(const std::string& date) const {
  * @return true if the value is valid.
  * @return false otherwise.
  */
-bool BitcoinExchange::isValidValue(const std::string& valueStr, double& value) const {
+BitcoinExchange::ValueStatus
+BitcoinExchange::validateValue(const std::string& valueStr, double& value) const {
 	char* end;
+
+	if (valueStr.empty())
+		return VALUE_BAD_INPUT;
+
 	value = std::strtod(valueStr.c_str(), &end);
 
-	if (*end != '\0')
-		return false;
+	if (end == valueStr.c_str() || *end != '\0')
+		return VALUE_BAD_INPUT;
 
 	if (value < 0)
-		return false;
+		return VALUE_NEGATIVE;
 	
 	if (value > 1000)
-		return false;
+		return VALUE_TOO_LARGE;
 
-	return true;
+	return VALUE_OK;
 }
 
 /**
