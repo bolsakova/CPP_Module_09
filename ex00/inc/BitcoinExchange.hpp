@@ -8,6 +8,13 @@
 
 class BitcoinExchange {
 	private:
+		enum ValueStatus {
+			VALUE_OK,
+			VALUE_BAD_INPUT,
+			VALUE_NEGATIVE,
+			VALUE_TOO_LARGE
+		};
+
 		// stores historical Bitcoin exchange rates (date -> rate)
 		std::map<std::string, double> _database;
 
@@ -22,7 +29,7 @@ class BitcoinExchange {
 		// checks whether the date has a valid format and value
 		bool isValidDate(const std::string& date) const;
 		// converts and validates the Bitcoin amount
-		bool isValidValue(const std::string& valueStr, double& value) const;
+		ValueStatus validateValue(const std::string& valueStr, double& value) const;
 
 		// removes leading and trailing whitespace
 		std::string trim(const std::string& str) const;
