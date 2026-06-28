@@ -16,7 +16,7 @@ class BitcoinExchange {
 		// parses one line of the CSV database
 		std::pair<std::string, double> parseDatabaseLine(const std::string& line) const;
 		// parses one line of the input file
-		std::pair<std::string, double> parseInputLine(const std::string& line) const;
+		std::pair<std::string, std::string> parseInputLine(const std::string& line) const;
 	
 		// checks whether the date has a valid format and value
 		bool isValidDate(const std::string& date) const;

@@ -130,3 +130,35 @@ std::string BitcoinExchange::trim(const std::string& str) const {
 	std::size_t last = str.find_last_not_of(whitespace);
 	return str.substr(first, last - first + 1);
 }
+
+/**
+ * @brief Parses one line from the input file.
+ * 
+ * The input line is expected to have the following format:
+ * 	- date | value
+ * Example: 2011-01-03 | 3
+ * This function only splits the line into two strings.
+ * It doesn't validate the date or the value.
+ * 
+ * @param line One line from the input file.
+ * @return std::pair containing date as first and value string as second.
+ * @throws std::runtime_error If the line does not contain exactly one separator.
+ */
+std::pair<std::string, std::string>
+BitcoinExchange::parseInputLine(const std::string& line) const {
+	std::size_t separator = line.find('|');
+
+	if (separator == std::string::npos)
+		throw std::runtime_error("Error: bad input => " + line);
+
+	if (line.find('|', separator + 1) != std::string::npos)
+		throw std::runtime_error("Error: bad input => " + line);
+	
+	std::string date = trim(line.substr(0, separator));
+	std::string valueStr = trim(line.substr(separator + 1));
+
+	if (date.empty() || valueStr.empty())
+		throw std::runtime_error("Error: bad input => " + line);
+	
+	return std::make_pair(date, valueStr);
+}
