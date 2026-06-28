@@ -120,3 +120,37 @@ void RPN::applyOperator(std::stack<int>& stack, char op) const {
 
 	stack.push(result);
 }
+
+/**
+ * @brief Evaluates an RPN expression.
+ * 
+ * The expression is read token by token from left to right.
+ * If the token is a number, it is pushed to the stack.
+ * If the token is an operator, th eoperation is applied to the top two
+ * stack elements.
+ * At the end of evaluation, exactly one value must remain in the stack.
+ * This value is the result of the expression.
+ * 
+ * @param expression RPN expression passes as a string.
+ * @return Result of the expression.
+ * @throws std::runtime_error If the expression is invalid.
+ */
+int RPN::evaluate(const std::string& expression) {
+	std::stringstream ss(expression);
+	std::string token;
+	std::stack<int> stack;
+
+	while (ss >> token) {
+		if (isNumber(token))
+			stack.push(token[0] - '0');
+		else if (isOperator(token))
+			applyOperator(stack, token[0]);
+		else
+			throw std::runtime_error("Error");
+	}
+
+	if (stack.size() != 1)
+		throw std::runtime_error("Error");
+	
+	return stack.top();
+}
