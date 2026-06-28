@@ -246,3 +246,32 @@ bool BitcoinExchange::isValidValue(const std::string& valueStr, double& value) c
 
 	return true;
 }
+
+/**
+ * @brief Returns the exchange rate for a given date.
+ * 
+ * If the exact date exists in the database, its rate is returned.
+ * If the exact date doesn't exist, the closest lower date is used.
+ * 
+ * @param date Date for which exchange rate is requested.
+ * @return Exchange rate for the exact or closest lower date.
+ * @throws std::runtime_error If the database is empty or if the requested
+ * date is earlier than the first available date.
+ */
+double BitcoinExchange::getExchangeRate(const std::string& date) const {
+	if (_database.empty())
+		throw std::runtime_error("Error: empty database.");
+
+	std::map<std::string, double>::const_iterator it = _database.lower_bound(date);
+
+	if (it != _database.end() && it->first == date)
+		return it->second;
+
+	if (it == _database.begin())
+		throw std::runtime_error("Error: no exchange rate available for this date.");
+
+	--it;
+	return it->second;
+}
+
+
