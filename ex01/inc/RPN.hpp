@@ -6,9 +6,6 @@
 
 class RPN {
 	private:
-		// stores operands during expression evaluation
-		std::stack<int> _stack;
-
 		// checks whether the token is a supported operator
 		bool isOperator(const std::string& token) const;
 		// checks whether the token is a valid operand
@@ -21,6 +18,9 @@ class RPN {
 		RPN(const RPN& other);
 		~RPN();
 		RPN& operator=(const RPN& other);
+
+		// evaluates an RPN expression and returns the result
+		int evaluate(const std::string& expression);
 };
 
 #endif
