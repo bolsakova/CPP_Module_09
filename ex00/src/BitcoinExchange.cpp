@@ -274,4 +274,51 @@ double BitcoinExchange::getExchangeRate(const std::string& date) const {
 	return it->second;
 }
 
+/**
+ * @brief Processes the user input file and prints exchange rate results.
+ * 
+ * The function reads the input file line by line. The first line is treated
+ * as a header and skipped. Each next line is parsed, validated and the used
+ * to calculate the Bitcoin value according to the database exchange rate.
+ * 
+ * If a line is invalid, the function prints the required error message and
+ * continues processing the next lines.
+ * 
+ * @param filename Path to the input file.
+ * @throws std::runtime_error If the input file cannot be opened.
+ */
+void BitcoinExchange::processInputFile(const std::string& filename) const {
+	std::ifstream file(filename);
 
+	if (!file.is_open())
+		throw std::runtime_error("Error: could not open file.");
+	
+	std::string line;
+	std::getline(file, line);
+
+	while (std::getline(file, line)) {
+		try {
+			std::pair<std::string, std::string> input = parseInputLine(line);
+			if (!isValidDate(input.first)) {
+				std::cerr << "Error: bad input =>" << input.first << std::endl;
+				continue;
+			}
+
+			double value;
+			if (!isValidValue(input.second, value)) {
+				if (!input.second.empty() && input.second[0] == '-')
+					std::cerr << "Error: not a positive number." << std::endl;
+				else
+					std::cerr << "Error: too large a number." << std::endl;
+				continue;
+			}
+
+			double rate = getExchangeRate(input.first);
+			double res = value * rate;
+
+			std::cout << input.first << " => " << value << " = " << res << std::endl;
+		} catch (const std::exception& e) {
+			std::cerr << e.what() << std::endl;
+		}
+	}
+}
