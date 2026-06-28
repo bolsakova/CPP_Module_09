@@ -12,7 +12,7 @@ class RPN {
 		bool isNumber(const std::string& token) const;
 
 		// performs an operation using the top two stack elements
-		void applyOperator(char op);
+		void applyOperator(std::stack<int>& stack, char op) const;
 	public:
 		RPN();
 		RPN(const RPN& other);

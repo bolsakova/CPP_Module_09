@@ -75,3 +75,48 @@ bool RPN::isNumber(const std::string& token) const {
 		&& token[0] >= '0'
 		&& token[0] <= '9');
 }
+
+/**
+ * @brief Applies an operator to the top two elements of the stack.
+ * 
+ * The function removes two values from the stack, applies the operation
+ * in the correct order and pushes the result back.
+ * The first popped value is the right operand.
+ * The second popped value is the left operand.
+ * Example:
+ * 	expression: 7 3 -
+ * 	a = 3
+ * 	b = 7
+ * 	result = b - a = 4
+ * 
+ * @param stack Stack containing operands.
+ * @param op Operator to apply.
+ * @throws std::runtime_error If there are not enough operands.
+ * @throws std::runtime_error If division by zero occurs.
+ */
+void RPN::applyOperator(std::stack<int>& stack, char op) const {
+	if (stack.size() < 2)
+		throw std::runtime_error("Error");
+
+	int a = stack.top();
+	stack.pop();
+
+	int b = stack.top();
+	stack.pop();
+
+	int result = 0;
+
+	if (op == '+')
+		result = b + a;
+	if (op == '-')
+		result = b - a;
+	if (op == '*')
+		result = b * a;
+	if (op == '/') {
+		if (a == 0)
+			throw std::runtime_error("Error");
+		result = b / a;
+	}
+
+	stack.push(result);
+}
