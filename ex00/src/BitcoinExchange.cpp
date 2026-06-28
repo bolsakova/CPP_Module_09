@@ -216,3 +216,33 @@ bool BitcoinExchange::isValidDate(const std::string& date) const {
 
 	return true;
 }
+
+/**
+ * @brief Validates and converts the Bitcoin amount.
+ * 
+ * The function converts the input string to a double and verifies that:
+ * 	- the entire string represents a valid number
+ * 	- the value isn't negative
+ * 	- the value doesn't exceed 1000
+ * 
+ * @param valueStr String representation of the Bitcoin amount.
+ * @param value Output parameter that receives the converted value.
+ * 
+ * @return true if the value is valid.
+ * @return false otherwise.
+ */
+bool BitcoinExchange::isValidValue(const std::string& valueStr, double& value) const {
+	char* end;
+	value = std::strtod(valueStr.c_str(), &end);
+
+	if (*end != '\0')
+		return false;
+
+	if (value < 0)
+		return false;
+	
+	if (value > 1000)
+		return false;
+
+	return true;
+}
