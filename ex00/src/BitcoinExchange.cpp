@@ -313,11 +313,18 @@ void BitcoinExchange::processInputFile(const std::string& filename) const {
 			}
 
 			double value;
-			if (!isValidValue(input.second, value)) {
-				if (!input.second.empty() && input.second[0] == '-')
-					std::cerr << "Error: not a positive number." << std::endl;
-				else
-					std::cerr << "Error: too large a number." << std::endl;
+			ValueStatus status = validateValue(input.second, value);
+
+			if (status == VALUE_BAD_INPUT) {
+				std::cerr << "Error: bad input =>" << line << std::endl;
+				continue;
+			}
+			if (status == VALUE_NEGATIVE) {
+				std::cerr << "Error: not a positive number." << std::endl;
+				continue;
+			}
+			if (status == VALUE_TOO_LARGE) {
+				std::cerr << "Error: too large number." << std::endl;
 				continue;
 			}
 
