@@ -43,3 +43,37 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 	}
 	return *this;
 }
+
+/**
+ * @brief Checks whether a string represents a valid positive integer.
+ * 
+ * The function verifies that the string:
+ * 	- isn't empty
+ * 	- contains only digits
+ * 	- represents a number greater then zero
+ * 	- doesn't exceed INT_MAX
+ * 
+ * @param str Argument string to validate.
+ * @return true if the argument is a valid positive integer.
+ * @return false otherwise.
+ */
+bool PmergeMe::isValidPositiveInteger(const std::string& str) const {
+	if (str.empty())
+		return false;
+
+	for (std::size_t i = 0; i < str.length(); ++i) {
+		if (str[i] < '0' || str[i] > '9')
+			return false;
+	}
+
+	char* end;
+	long value = std::strtol(str.c_str(), &end, 10);
+
+	if (*end != '\0')
+		return false;
+	
+	if (value <= 0 || value > INT_MAX)
+		return false;
+
+	return true;
+}
