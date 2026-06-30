@@ -323,3 +323,45 @@ void PmergeMe::run() const {
               << " elements with std::deque : "
               << dequeTime << " us" << std::endl;
 }
+
+/**
+ * @brief Generates insertion order based on Jacobsthal sequence.
+ * 
+ * The order is used to decide which pending elements should be inserted first.
+ * 
+ * @param size Number of pending element.
+ * @return Vector of indexes in Jacobsthal insertion order.
+ */
+std::vector<std::size_t> PmergeMe::generateJaconsthalOrder(std::size_t size) const {
+	std::vector<std::size_t> order;
+	std::vector<std::size_t> jacobsthal;
+
+	if (size == 0)
+		return order;
+
+	jacobsthal.push_back(1);
+	jacobsthal.push_back(3);
+
+	while (jacobsthal.back() < size) {
+		std::size_t n = jacobsthal.size();
+		jacobsthal.push_back(jacobsthal[n - 1] + 2 * jacobsthal[n - 2]);
+	}
+
+	order.push_back(0);
+	std::size_t previous = 1;
+
+	for (std::size_t i = 1; i < jacobsthal.size(); ++i) {
+		std::size_t current = jacobsthal[i];
+
+		if (current > size)
+			current = size;
+		
+		for (std::size_t j = current; j > previous; --j)
+			order.push_back(j - 1);
+		
+		previous = current;
+		if (previous >= size)
+			break;
+	}
+	return order;
+}
