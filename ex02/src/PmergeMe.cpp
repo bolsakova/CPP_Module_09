@@ -81,6 +81,21 @@ bool PmergeMe::isValidPositiveInteger(const std::string& str) const {
 }
 
 /**
+ * @brief Checks whether the input vector is already sorted.
+ * 
+ * This function is used to avoid unnecessary execution of the
+ * Ford-Johnson algorithm when the input sequence is already sorted.
+ * Uses std::is_sorted() to determine if the stored vector is in
+ * ascending order.
+ * 
+ * @return true if the vector is sorted.
+ * @return false otherwise.
+ */
+bool PmergeMe::isVectorSorted() const {
+	return std::is_sorted(_vectorData.begin(), _vectorData.end());
+}
+
+/**
  * @brief Parses command-line arguments into vector and deque.
  * 
  * Each argument must be a valid positive integer. The same values are stored
