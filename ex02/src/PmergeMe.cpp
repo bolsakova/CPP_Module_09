@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
+#include <chrono>
 
 /**
  * @brief Default Constructor.
@@ -262,4 +263,22 @@ PmergeMe::sortDeque(const std::deque<int>& data) const {
 	}
 
 	return mainChain;
+}
+
+/**
+ * @brief Prints a vector with a label.
+ * @param label Text printed before the sequence.
+ * @param data Vector to print.
+ */
+void PmergeMe::printVector(const std::string& label, const std::vector<int>& data) const {
+	std::cout << label;
+
+	for (std::size_t i = 0; i < data.size(); ++i)
+		std::cout << " " << data[i];
+
+	std::cout << std::endl;
+}
+
+void PmergeMe::printDeque(const std::string& label, const std::deque<int>& data) const {
+	
 }
