@@ -177,13 +177,31 @@ PmergeMe::sortVector(const std::vector<int>& data) const {
 	std::vector<int> bigger = extractVectorBigger(pairs);
 	std::vector<int> sortedBigger = sortVector(bigger);
 
+	std::vector<std::pair<int, int> > sortedPairs;
+
+	for (std::size_t i = 0; i < sortedBigger.size(); ++i) {
+		for (std::size_t j = 0; j < pairs.size(); ++j) {
+			if (pairs[j].first == sortedBigger[i]) {
+				sortedPairs.push_back(pairs[j]);
+				break;
+			}
+		}
+	}
+
 	std::vector<int> mainChain = sortedBigger;
-	std::vector<std::size_t> order = generateJaconsthalOrder(pairs.size());
+	mainChain.insert(mainChain.begin(), sortedPairs[0].second);
+
+	std::vector<std::size_t> order = generateJaconsthalOrder(sortedPairs.size() - 1);
 
 	for (std::size_t i = 0; i < order.size(); ++i) {
-		std::size_t index = order[i];
-		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[index].second);
-		mainChain.insert(pos, pairs[index].second);
+		std::size_t pairIndex = order[i] + 1;
+		int value = sortedPairs[pairIndex].second;
+		int limit = sortedPairs[pairIndex].first;
+
+		std::vector<int>::iterator limitIt = std::find(mainChain.begin(), mainChain.end(), limit);
+		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), limitIt, value);
+
+		mainChain.insert(pos, value);
 	}
 
 	if (odd != -1) {
