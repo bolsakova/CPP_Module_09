@@ -39,7 +39,7 @@ class PmergeMe {
 		sortDeque(const std::deque<int>& data) const;
 
 		// generates Jacobsthal insertion order
-		std::vector<std::size_t> generateJaconsthalOrder(std::size_t size) const;
+		std::vector<std::size_t> generateJacobsthalOrder(std::size_t size) const;
 
 		// prints vector and deque sequence
 		void printVector(const std::string& label, const std::vector<int>& data) const;

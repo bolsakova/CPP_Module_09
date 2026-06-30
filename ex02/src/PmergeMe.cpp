@@ -191,7 +191,7 @@ PmergeMe::sortVector(const std::vector<int>& data) const {
 	std::vector<int> mainChain = sortedBigger;
 	mainChain.insert(mainChain.begin(), sortedPairs[0].second);
 
-	std::vector<std::size_t> order = generateJaconsthalOrder(sortedPairs.size() - 1);
+	std::vector<std::size_t> order = generateJacobsthalOrder(sortedPairs.size() - 1);
 
 	for (std::size_t i = 0; i < order.size(); ++i) {
 		std::size_t pairIndex = order[i] + 1;
@@ -284,7 +284,7 @@ PmergeMe::sortDeque(const std::deque<int>& data) const {
 	std::deque<int> mainChain = sortedBigger;
 	mainChain.insert(mainChain.begin(), sortedPairs[0].second);
 	
-	std::vector<std::size_t> order = generateJaconsthalOrder(sortedPairs.size() - 1);
+	std::vector<std::size_t> order = generateJacobsthalOrder(sortedPairs.size() - 1);
 
 	for (std::size_t i = 0; i < order.size(); ++i) {
 		std::size_t pairIndex = order[i] + 1;
@@ -371,7 +371,7 @@ void PmergeMe::run() const {
  * @param size Number of pending element.
  * @return Vector of indexes in Jacobsthal insertion order.
  */
-std::vector<std::size_t> PmergeMe::generateJaconsthalOrder(std::size_t size) const {
+std::vector<std::size_t> PmergeMe::generateJacobsthalOrder(std::size_t size) const {
 	std::vector<std::size_t> order;
 
 	if (size == 0)
@@ -391,6 +391,8 @@ std::vector<std::size_t> PmergeMe::generateJaconsthalOrder(std::size_t size) con
 		
 		for (std::size_t i = current; i > previous; --i)
 			order.push_back(i - 2);
+		
+		previous = current;
 		
 		std::size_t nextJacob = currJacob + 2 * prevJacob;
 		prevJacob = currJacob;
