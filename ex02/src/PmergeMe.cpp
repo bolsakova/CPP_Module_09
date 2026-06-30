@@ -102,3 +102,43 @@ void PmergeMe::parseInput(int ac, char *av[]) {
 		_dequeData.push_back(value);
 	}
 }
+
+/**
+ * @brief Creates pairs from vector data.
+ * 
+ * Elements are grouped two by two. Inside eachpair, the bigger element is
+ * stored in first and the smaller element is stored in second.
+ * If the number of elements is odd, the last element is stored separately
+ * in the odd parameter.
+ * 
+ * @param data Input vector.
+ * @param odd Output parameter for the unpaired element, or -1 if none.
+ * @return Vector of pairs where first is bigger and second smaller.
+ */
+std::vector<std::pair<int, int> >
+PmergeMe::makeVectorPairs(const std::vector<int>& data, int& odd) const {
+	std::vector<std::pair<int, int> > pairs;
+	odd = -1;
+
+	for (std::size_t i = 0; i + 1 < data.size(); i += 2) {
+		if (data[i] > data[i + 1])
+			pairs.push_back(std::make_pair(data[i], data[i + 1]));
+		else
+			pairs.push_back(std::make_pair(data[i + 1], data[i]));
+	}
+
+	if (data.size() % 2 != 0)
+		odd = data.back();
+	
+	return pairs;
+}
+
+std::vector<int>
+PmergeMe::sortVector(const std::vector<int>& data) const {
+
+}
+
+std::deque<int>
+PmergeMe::sortDeque(const std::deque<int>& data) const {
+
+}
