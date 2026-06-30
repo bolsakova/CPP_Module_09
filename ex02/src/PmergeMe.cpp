@@ -184,7 +184,7 @@ PmergeMe::sortVector(const std::vector<int>& data) const {
 		mainChain.insert(pos, pairs[i].second);
 	}
 
-	if (odd != 1) {
+	if (odd != -1) {
 		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), odd);
 		mainChain.insert(pos, odd);
 	}
@@ -257,7 +257,7 @@ PmergeMe::sortDeque(const std::deque<int>& data) const {
 		mainChain.insert(pos, pairs[i].second);
 	}
 
-	if (odd != 1) {
+	if (odd != -1) {
 		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), odd);
 		mainChain.insert(pos, odd);
 	}
