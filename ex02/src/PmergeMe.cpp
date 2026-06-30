@@ -133,6 +133,25 @@ PmergeMe::makeVectorPairs(const std::vector<int>& data, int& odd) const {
 	return pairs;
 }
 
+/**
+ * @brief Extracts bigger elements from pairs.
+ * 
+ * Since each pair stores the bigger element in first, this function creates
+ * a vector conatining only first values.
+ * 
+ * @param pairs Vector of bigger/smaller pairs.
+ * @return Vector containing all bigger elements.
+ */
+std::vector<int>
+PmergeMe::extractVectorBigger(const std::vector<std::pair<int, int> >& pairs) const {
+	std::vector<int> bigger;
+
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		bigger.push_back(pairs[i].first);
+
+	return bigger;
+}
+		
 std::vector<int>
 PmergeMe::sortVector(const std::vector<int>& data) const {
 
