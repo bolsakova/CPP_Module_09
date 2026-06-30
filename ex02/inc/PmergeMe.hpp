@@ -18,6 +18,9 @@ class PmergeMe {
 		// checks whether one arg is a valid positive integer
 		bool isValidPositiveInteger(const std::string& str) const;
 
+		// checks whether the input vector is already sorted
+		bool isVectorSorted() const;
+
 		// helpers to make pairs in vector and deque and extract bigger elements
 		std::vector<std::pair<int, int> >
 		makeVectorPairs(const std::vector<int>& data, int& odd) const;
@@ -53,6 +56,9 @@ class PmergeMe {
 
 		// runs sorting for both containers and prints results
 		void run() const;
+
+		// prints the generated Jacobsthal insertion order
+		void printJacobsthalOrder(std::size_t size) const;
 };
 
 #endif
