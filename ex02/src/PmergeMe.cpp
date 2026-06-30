@@ -178,10 +178,12 @@ PmergeMe::sortVector(const std::vector<int>& data) const {
 	std::vector<int> sortedBigger = sortVector(bigger);
 
 	std::vector<int> mainChain = sortedBigger;
+	std::vector<std::size_t> order = generateJaconsthalOrder(pairs.size());
 
-	for (std::size_t i = 0; i < pairs.size(); ++i) {
-		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[i].second);
-		mainChain.insert(pos, pairs[i].second);
+	for (std::size_t i = 0; i < order.size(); ++i) {
+		std::size_t index = order[i];
+		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[index].second);
+		mainChain.insert(pos, pairs[index].second);
 	}
 
 	if (odd != -1) {
@@ -251,10 +253,12 @@ PmergeMe::sortDeque(const std::deque<int>& data) const {
 	std::deque<int> sortedBigger = sortDeque(bigger);
 
 	std::deque<int> mainChain = sortedBigger;
+	std::vector<std::size_t> order = generateJaconsthalOrder(pairs.size());
 
-	for (std::size_t i = 0; i < pairs.size(); ++i) {
-		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[i].second);
-		mainChain.insert(pos, pairs[i].second);
+	for (std::size_t i = 0; i < order.size(); ++i) {
+		std::size_t index = order[i];
+		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[index].second);
+		mainChain.insert(pos, pairs[index].second);
 	}
 
 	if (odd != -1) {
