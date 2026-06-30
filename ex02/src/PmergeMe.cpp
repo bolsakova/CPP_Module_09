@@ -270,13 +270,30 @@ PmergeMe::sortDeque(const std::deque<int>& data) const {
 	std::deque<int> bigger = extractDequeBigger(pairs);
 	std::deque<int> sortedBigger = sortDeque(bigger);
 
+	std::deque<std::pair<int, int> > sortedPairs;
+
+	for (std::size_t i = 0; i < sortedBigger.size(); ++i) {
+        for (std::size_t j = 0; j < pairs.size(); ++j) {
+            if (pairs[j].first == sortedBigger[i]) {
+                sortedPairs.push_back(pairs[j]);
+                break;
+            }
+        }
+    }
+
 	std::deque<int> mainChain = sortedBigger;
-	std::vector<std::size_t> order = generateJaconsthalOrder(pairs.size());
+	mainChain.insert(mainChain.begin(), sortedPairs[0].second);
+	
+	std::vector<std::size_t> order = generateJaconsthalOrder(sortedPairs.size() - 1);
 
 	for (std::size_t i = 0; i < order.size(); ++i) {
-		std::size_t index = order[i];
-		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[index].second);
-		mainChain.insert(pos, pairs[index].second);
+		std::size_t pairIndex = order[i] + 1;
+		int value = sortedPairs[pairIndex].second;
+        int limit = sortedPairs[pairIndex].first;
+		
+		std::deque<int>::iterator limitIt = std::find(mainChain.begin(), mainChain.end(), limit);
+		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), limitIt, value);
+		mainChain.insert(pos, value);
 	}
 
 	if (odd != -1) {
@@ -356,34 +373,28 @@ void PmergeMe::run() const {
  */
 std::vector<std::size_t> PmergeMe::generateJaconsthalOrder(std::size_t size) const {
 	std::vector<std::size_t> order;
-	std::vector<std::size_t> jacobsthal;
 
 	if (size == 0)
 		return order;
 
-	jacobsthal.push_back(1);
-	jacobsthal.push_back(3);
+	std::size_t totalPairs = size + 1;
 
-	while (jacobsthal.back() < size) {
-		std::size_t n = jacobsthal.size();
-		jacobsthal.push_back(jacobsthal[n - 1] + 2 * jacobsthal[n - 2]);
-	}
-
-	order.push_back(0);
+	std::size_t prevJacob = 1;
+	std::size_t currJacob = 3;
 	std::size_t previous = 1;
+	
+	while (previous < totalPairs) {
+		std::size_t current = currJacob;
 
-	for (std::size_t i = 1; i < jacobsthal.size(); ++i) {
-		std::size_t current = jacobsthal[i];
-
-		if (current > size)
-			current = size;
+		if (current > totalPairs)
+			current = totalPairs;
 		
-		for (std::size_t j = current; j > previous; --j)
-			order.push_back(j - 1);
+		for (std::size_t i = current; i > previous; --i)
+			order.push_back(i - 2);
 		
-		previous = current;
-		if (previous >= size)
-			break;
+		std::size_t nextJacob = currJacob + 2 * prevJacob;
+		prevJacob = currJacob;
+		currJacob = nextJacob;
 	}
 	return order;
 }
