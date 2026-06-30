@@ -77,3 +77,28 @@ bool PmergeMe::isValidPositiveInteger(const std::string& str) const {
 
 	return true;
 }
+
+/**
+ * @brief Parses command-line arguments into vector and deque.
+ * 
+ * Each argument must be a valid positive integer. The same values are stored
+ * in both containers so the same algorithm can later be tested with different
+ * data structures.
+ * 
+ * @param ac Number of command-line arguments.
+ * @param av Command-line arguments.
+ * @throws std::runtime_error If there are no numbers or no argument is invalid.
+ */
+void PmergeMe::parseInput(int ac, char *av[]) {
+	if (ac < 2)
+		throw std::runtime_error("Error");
+		
+	for (int i = 1; i < ac; ++i) {
+		std::string arg(av[i]);
+		if (!isValidPositiveInteger(arg))
+			throw std::runtime_error("Error");
+		int value = std::atoi(arg.c_str());
+		_vectorData.push_back(value);
+		_dequeData.push_back(value);
+	}
+}
