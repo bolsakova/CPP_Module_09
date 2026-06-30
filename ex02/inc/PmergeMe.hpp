@@ -56,9 +56,6 @@ class PmergeMe {
 
 		// runs sorting for both containers and prints results
 		void run() const;
-
-		// prints the generated Jacobsthal insertion order
-		void printJacobsthalOrder(std::size_t size) const;
 };
 
 #endif

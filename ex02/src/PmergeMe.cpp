@@ -416,23 +416,3 @@ PmergeMe::generateJacobsthalOrder(std::size_t size) const {
 	}
 	return order;
 }
-
-/**
- * @brief Prints the generated Jacobsthal insertion order.
- * 
- * This function is intended only for debugging and explanation of
- * the algorithm. It displays the insertion order generated from
- * the Jacobsthal sequence.
- * 
- * @param size Number of pending elements.
- */
-void PmergeMe::printJacobsthalOrder(std::size_t size) const {
-	std::vector<std::size_t> order = generateJacobsthalOrder(size);
-
-	std::cout << "Jacobsthal inertion order:" << std::endl;
-
-	for (std::size_t i = 0; i < order.size(); ++i)
-		std::cout << order[i] + 1 << " ";
-
-	std::cout << std::endl;
-}
