@@ -292,3 +292,34 @@ void PmergeMe::printDeque(const std::string& label, const std::deque<int>& data)
 
 	std::cout << std::endl;
 }
+
+/**
+ * @brief Runs sorting for both containers and prints results.
+ * 
+ * The function sorts the original input using std::vector and std::deque,
+ * measures the execution time for each container and prints the required
+ * output.
+ */
+void PmergeMe::run() const {
+	printVector("Before: ", _vectorData);
+	
+	auto vectorStart = std::chrono::high_resolution_clock::now();
+	std::vector<int> sortedVector = sortVector(_vectorData);
+	auto vectorEnd = std::chrono::high_resolution_clock::now();
+	
+	auto dequeStart = std::chrono::high_resolution_clock::now();
+	std::deque<int> sortedDeque = sortDeque(_dequeData);
+	auto dequeEnd = std::chrono::high_resolution_clock::now();
+
+	printVector("After: ", sortedVector);
+
+	double vectorTime = std::chrono::duration<double, std::micro>(vectorEnd - vectorStart).count();
+	double dequeTime = std::chrono::duration<double, std::micro>(dequeEnd - dequeStart).count();
+
+	std::cout << "Time to process a range of " << _vectorData.size()
+              << " elements with std::vector : "
+              << vectorTime << " us" << std::endl;
+	std::cout << "Time to process a range of " << _dequeData.size()
+              << " elements with std::deque : "
+              << dequeTime << " us" << std::endl;
+}
