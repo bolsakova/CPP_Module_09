@@ -18,13 +18,19 @@ class PmergeMe {
 		// checks whether one arg is a valid positive integer
 		bool isValidPositiveInteger(const std::string& str) const;
 
-		// helpers to make pairs in vector and extract bigger elements
+		// helpers to make pairs in vector and deque and extract bigger elements
 		std::vector<std::pair<int, int> >
 		makeVectorPairs(const std::vector<int>& data, int& odd) const;
 
 		std::vector<int>
 		extractVectorBigger(const std::vector<std::pair<int, int> >& pairs) const;
 		
+		std::deque<std::pair<int, int> >
+		makeDequePairs(const std::deque<int>& data, int& odd) const;
+
+		std::deque<int>
+		extractDequeBigger(const std::deque<std::pair<int, int> >& pairs) const;
+
 		// sorts vector and deque using Ford-Johnson algorithm
 		std::vector<int>
 		sortVector(const std::vector<int>& data) const;

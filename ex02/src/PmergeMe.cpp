@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 /**
  * @brief Default Constructor.
@@ -134,10 +135,10 @@ PmergeMe::makeVectorPairs(const std::vector<int>& data, int& odd) const {
 }
 
 /**
- * @brief Extracts bigger elements from pairs.
+ * @brief Extracts bigger elements from vector pairs.
  * 
  * Since each pair stores the bigger element in first, this function creates
- * a vector conatining only first values.
+ * a vector containing only first values.
  * 
  * @param pairs Vector of bigger/smaller pairs.
  * @return Vector containing all bigger elements.
@@ -151,13 +152,114 @@ PmergeMe::extractVectorBigger(const std::vector<std::pair<int, int> >& pairs) co
 
 	return bigger;
 }
-		
+
+/**
+ * @brief Sorts a vector using the Ford-Johnson merge-insertion algorithm.
+ * 
+ * The function:
+ * 	- creates bigger/smaller pairs
+ * 	- recursively sorts bigger elements
+ * 	- builds the main chain
+ * 	- inserts smaller elements using binary insertion
+ * 	- inserts odd element if it exists
+ * 
+ * @param data Input vector.
+ * @return Sorted vector.
+ */
 std::vector<int>
 PmergeMe::sortVector(const std::vector<int>& data) const {
+	if (data.size() <= 1)
+		return data;
 
+	int odd;
+	std::vector<std::pair<int, int> > pairs = makeVectorPairs(data, odd);
+	std::vector<int> bigger = extractVectorBigger(pairs);
+	std::vector<int> sortedBigger = sortVector(bigger);
+
+	std::vector<int> mainChain = sortedBigger;
+
+	for (std::size_t i = 0; i < pairs.size(); ++i) {
+		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[i].second);
+		mainChain.insert(pos, pairs[i].second);
+	}
+
+	if (odd != 1) {
+		std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), odd);
+		mainChain.insert(pos, odd);
+	}
+
+	return mainChain;
 }
 
+/**
+ * @brief Creates pairs from deque data.
+ * 
+ * Elements are grouped two by two. Inside each pair, the bigger element is
+ * stored in first and the smallesr element is stored in second.
+ * 
+ * @param data Input deque.
+ * @param odd Output parameter for the unpaired element, or -1 if none.
+ * @return Deque of pairs where first is bigger and second is smaller.
+ */
+std::deque<std::pair<int, int> >
+PmergeMe::makeDequePairs(const std::deque<int>& data, int& odd) const {
+	std::deque<std::pair<int, int> > pairs;
+	odd = -1;
+
+	for (std::size_t i = 0; i + 1 < data.size(); i += 2) {
+		if (data[i] > data[i + 1])
+			pairs.push_back(std::make_pair(data[i], data[i + 1]));
+		else
+			pairs.push_back(std::make_pair(data[i + 1], data[i]));
+	}
+
+	if (data.size() % 2 != 0)
+		odd = data.back();
+	
+	return pairs;
+}
+
+/**
+ * @brief Extracts bigger elements from deque pairs.
+ * @param pairs Deque of bigger/smaller pairs.
+ * @return Deque containing all bigger elements.
+ */
+std::deque<int>
+PmergeMe::extractDequeBigger(const std::deque<std::pair<int, int> >& pairs) const {
+	std::deque<int> bigger;
+
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		bigger.push_back(pairs[i].first);
+
+	return bigger;
+}
+
+/**
+ * @brief Sorts a deque using the Ford-Johnson merge-insertion algorithm.
+ * @param data Input deque.
+ * @return Sorted deque.
+ */
 std::deque<int>
 PmergeMe::sortDeque(const std::deque<int>& data) const {
+	if (data.size() <= 1)
+		return data;
 
+	int odd;
+	std::deque<std::pair<int, int> > pairs = makeDequePairs(data, odd);
+	std::deque<int> bigger = extractDequeBigger(pairs);
+	std::deque<int> sortedBigger = sortDeque(bigger);
+
+	std::deque<int> mainChain = sortedBigger;
+
+	for (std::size_t i = 0; i < pairs.size(); ++i) {
+		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[i].second);
+		mainChain.insert(pos, pairs[i].second);
+	}
+
+	if (odd != 1) {
+		std::deque<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), odd);
+		mainChain.insert(pos, odd);
+	}
+
+	return mainChain;
 }
