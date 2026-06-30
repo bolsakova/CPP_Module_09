@@ -279,6 +279,16 @@ void PmergeMe::printVector(const std::string& label, const std::vector<int>& dat
 	std::cout << std::endl;
 }
 
+/**
+ * @brief Prints a deque with a label.
+ * @param label Text printed before the sequence.
+ * @param data Deque to print.
+ */
 void PmergeMe::printDeque(const std::string& label, const std::deque<int>& data) const {
-	
+	std::cout << label;
+
+	for (std::size_t i = 0; i < data.size(); ++i)
+		std::cout << " " << data[i];
+
+	std::cout << std::endl;
 }
