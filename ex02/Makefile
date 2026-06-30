@@ -1,9 +1,9 @@
-NAME = RPN
+NAME = PmergeMe
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
-FILES = main RPN
+FILES = main PmergeMe
 
 SRCDIR = src
 
